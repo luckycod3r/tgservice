@@ -1,30 +1,79 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+  <div id="app">
+    <headerComp :links="links" @toggle-dialog="handleToggleDialog"/>
+    <main>
+      <router-view/>
+    </main>
+    <footerComp/>
+    <dialogNavComp v-if="openDialog" :links="links"/>
+  </div>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import HeaderComp from './components/headerComp.vue';
+import FooterComp from './components/footerComp.vue';
+import dialogNavComp from './components/dialogNavComp.vue';
 
-nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
+export default {
+  name: "mainApp",
+  components: {
+    HeaderComp,
+    FooterComp,
+    dialogNavComp
+  },
+  data() {
+    return {
+      openDialog: false,
+      links: [
+        { name: 'О сервисе', href: '/' },
+        { name: 'Чекер', href: '/checker' },
+        { name: 'Оплата', href: '/payment' },
+        { name: 'Инструменты', href: '/tools' },
+        { name: 'F.A.Q.', href: '/faq' },
+        { name: 'Регистрация', href: '/register' },
+        { name: 'Вход', href: '/login' },
+      ],
+    }
+  },
+  mounted(){
+    this.openDialog = false
+    console.log("Layout by Vkidik:", "https://t.me/young_vykqq")
+  },
+  methods: {
+    handleToggleDialog() {
+      this.openDialog = !this.openDialog;
     }
   }
 }
+</script>
+
+
+<style lang="scss">
+  *{
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+    box-sizing: border-box;
+    list-style-type: none;
+    text-decoration: none;
+  }
+
+  html, body, #app{
+    width: 100%;
+    height: 100dvh;
+  }
+
+  #app{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  main{
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 </style>
