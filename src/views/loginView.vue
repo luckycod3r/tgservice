@@ -1,12 +1,12 @@
 <template>
     <section id="login" class="container flex px-4 flex-col justify-center justify-items-center gap-10">
         <h2 class="text-5xl font-semibold">Вход</h2>
-        <form>
-            <label class="input input-bordered flex items-center gap-2 px-6 py-6 ">
-                <input type="email" name="email" class="grow" placeholder="E-mail" />
+        <form @submit.prevent="handleLogin">
+            <label class="input input-bordered flex items-center gap-2 px-6 py-6">
+                <input type="email" v-model="formData.email" name="email" class="grow" placeholder="E-mail" required />
             </label>
-            <label class="input input-bordered flex items-center gap-2 px-6 py-6 ">
-                <input :type="passwordVisible ? 'text' : 'password'" name="password" class="grow" placeholder="Пароль" />
+            <label class="input input-bordered flex items-center gap-2 px-6 py-6">
+                <input :type="passwordVisible ? 'text' : 'password'" v-model="formData.password" name="password" class="grow" placeholder="Пароль" required />
                 <kbd class="cursor-pointer" @click="togglePasswordVisibility">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M2.06202 12.3481C1.97868 12.1236 1.97868 11.8766 2.06202 11.6521C2.87372 9.68397 4.25153 8.00116 6.02079 6.81701C7.79004 5.63287 9.87106 5.00073 12 5.00073C14.129 5.00073 16.21 5.63287 17.9792 6.81701C19.7485 8.00116 21.1263 9.68397 21.938 11.6521C22.0214 11.8766 22.0214 12.1236 21.938 12.3481C21.1263 14.3163 19.7485 15.9991 17.9792 17.1832C16.21 18.3674 14.129 18.9995 12 18.9995C9.87106 18.9995 7.79004 18.3674 6.02079 17.1832C4.25153 15.9991 2.87372 14.3163 2.06202 12.3481Z" stroke="#419FD9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -16,29 +16,62 @@
             </label>
             <button type="submit" class="btn-primary px-12 rounded-xl">Войти</button>
         </form>
-        <p>Нет аакаунта? Пора его <RouterLink class="login-link" to="/register">создать</RouterLink>!</p>
+        <p>Нет аккаунта? Пора его <RouterLink class="login-link" to="/register">создать</RouterLink>!</p>
     </section>
 </template>
 
 <script>
-    import { RouterLink } from 'vue-router';
+import axios from 'axios';
+import { RouterLink } from 'vue-router';
 
-    export default {
-        name: "loginView",
-        components: {
-            RouterLink
+export default {
+    name: "loginView",
+    components: {
+        RouterLink
+    },
+    data() {
+        return {
+            passwordVisible: false, // состояние видимости пароля
+            formData: {
+                email: '', // E-mail пользователя
+                password: '' // Пароль пользователя
+            }
+        };
+    },
+    methods: {
+        togglePasswordVisibility() {
+            this.passwordVisible = !this.passwordVisible; // переключение состояния
         },
-        data() {
-            return {
-                passwordVisible: false, // состояние видимости пароля
-            };
-        },
-        methods: {
-            togglePasswordVisibility() {
-                this.passwordVisible = !this.passwordVisible; // переключение состояния
+        async handleLogin() {
+            try {
+                const params = new URLSearchParams();
+                params.append('username', this.formData.email);
+                params.append('password', this.formData.password);
+                const response = await axios.post('http://188.225.42.88:8011/auth/jwt/login', params, {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                });
+                if (response.status === 200) {
+                    alert('Вход выполнен успешно!');
+                    const token = response.data.access_token;
+                    localStorage.setItem('token', token);
+                    this.$router.push('/dashboard');
+                }
+            } catch (error) {
+                if (error.response && error.response.data) {
+                    if (error.response.data.detail === "LOGIN_BAD_CREDENTIALS") {
+                        alert('Неверные учетные данные.');
+                    } else {
+                        alert('Ошибка входа: ' + error.response.data.detail);
+                    }
+                } else {
+                    alert('Произошла ошибка при входе. Попробуйте еще раз.');
+                }
             }
         }
     }
+}
 </script>
 
 <style lang="scss" scoped>

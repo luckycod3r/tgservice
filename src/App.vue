@@ -1,11 +1,11 @@
 <template>
   <div id="app">
-    <headerComp :links="links" @toggle-dialog="handleToggleDialog"/>
+    <headerComp :links="filteredLinks" @toggle-dialog="handleToggleDialog"/>
     <main>
       <router-view/>
     </main>
     <footerComp/>
-    <dialogNavComp v-if="openDialog" :links="links"/>
+    <dialogNavComp v-if="openDialog" :links="filteredLinks"/>
   </div>
 </template>
 
@@ -32,20 +32,44 @@ export default {
         { name: 'F.A.Q.', href: '/faq' },
         { name: 'Регистрация', href: '/register' },
         { name: 'Вход', href: '/login' },
+        { name: 'Аккаунт', href: '/dashboard' }
       ],
     }
   },
-  mounted(){
-    this.openDialog = false
-    console.log("Layout by Vkidik:", "https://t.me/young_vykqq")
+  computed: {
+    filteredLinks() {
+      const token = localStorage.getItem('token');
+      
+      return this.links.filter(link => {
+        if (token) {
+          return !(link.href === '/register' || link.href === '/login');
+        } else {
+          return !(link.href === '/dashboard');
+        }
+      });
+    }
+  },
+  watch: {
+    '$route'() {
+      this.updateLinks();
+    }
+  },
+  mounted() {
+    this.updateLinks(); 
+    this.openDialog = false;
+    console.log("Layout by Vkidik:", "https://t.me/young_vykqq");
   },
   methods: {
     handleToggleDialog() {
       this.openDialog = !this.openDialog;
+    },
+    updateLinks() {
+      this.$forceUpdate(); 
     }
   }
 }
 </script>
+
 
 
 <style lang="scss">
