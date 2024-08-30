@@ -47,6 +47,7 @@ export default {
                 const params = new URLSearchParams();
                 params.append('username', this.formData.email);
                 params.append('password', this.formData.password);
+                params.append('jwt_token', '')
                 const response = await axios.post('http://188.225.42.88:8011/auth/jwt/login', params, {
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
