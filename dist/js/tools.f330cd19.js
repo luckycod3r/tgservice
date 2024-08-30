@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunktg_service"]=self["webpackChunktg_service"]||[]).push([[508],{1823:function(e,n,r){r.r(n),r.d(n,{default:function(){return a}});var u=r(6768);function t(e,n,r,t,c,s){return(0,u.uX)(),(0,u.CE)("div",null," Скоро здесь будет что-то новое... ")}var c={},s=r(1241);const i=(0,s.A)(c,[["render",t]]);var a=i}}]);
+//# sourceMappingURL=tools.f330cd19.js.map
