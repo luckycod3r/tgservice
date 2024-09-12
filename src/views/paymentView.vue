@@ -27,7 +27,9 @@ import axios from 'axios';
                 let info = await axios.post("https://checker.tg-service.pro/api/billing",{
                     sum : this.sum
                 })
-                console.log(info);
+                if(info.status == 200){
+                    window.open(info.link)
+                }
                 
             }
         }
