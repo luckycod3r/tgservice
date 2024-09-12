@@ -4,17 +4,33 @@
         <p>Введите сумму пополнения и нажмите Оплатить</p>
         <form>
             <label class="input input-bordered flex items-center gap-2 px-6 py-6">
-                <input type="number" name="payment" aria-describedby="helper-text-explanation" class="grow" placeholder="Сумма пополнения (руб)" title="Сумма пополнения (руб)" />
+                <input type="number" v-model="sum" name="payment" aria-describedby="helper-text-explanation" class="grow" placeholder="Сумма пополнения (руб)" title="Сумма пополнения (руб)" />
             </label>
-            <button type="submit" class="btn-primary px-12 rounded-xl">Оплатить</button>
+            <button type="submit" class="btn-primary px-12 rounded-xl" @click="startPayment()">Оплатить</button>
         </form>
     </section>
 </template>
 
 <script>
+import axios from 'axios';
+
 
     export default {
         name: "paymentView",
+        data(){
+            return {
+                sum : 0
+            }
+        },
+        methods : {
+            async startPayment(){
+                let info = await axios.post("https://checker.tg-service.pro/api/billing",{
+                    sum : this.sum
+                })
+                console.log(info);
+                
+            }
+        }
     }
 </script>
 
