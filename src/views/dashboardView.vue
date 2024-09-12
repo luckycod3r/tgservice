@@ -69,9 +69,8 @@ export default {
 
             } catch (error) {
                 console.error('Ошибка проверки токена:', error);
-                localStorage.removeItem('token');
                 this.$router.push('/login');
-                location.reload()
+                
             }
         },
         async resetPassword() {
