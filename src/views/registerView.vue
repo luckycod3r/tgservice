@@ -47,7 +47,7 @@ export default {
         },
         async handleRegister() {
             try {
-                const response = await axios.post('http://188.225.42.88:8011/auth/register', this.formData, {
+                const response = await axios.post('https://checker.tg-service.pro/auth/register', this.formData, {
                     headers: {
                         'Content-Type': 'application/json'
                     }
