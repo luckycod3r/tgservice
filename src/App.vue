@@ -13,6 +13,7 @@
 import HeaderComp from './components/headerComp.vue';
 import FooterComp from './components/footerComp.vue';
 import dialogNavComp from './components/dialogNavComp.vue';
+import axios from 'axios';
 
 export default {
   name: "mainApp",
@@ -24,6 +25,7 @@ export default {
   data() {
     return {
       openDialog: false,
+      token : false,
       links: [
         { name: 'О сервисе', href: '/' },
         { name: 'Чекер', href: '/checker' },
@@ -38,7 +40,10 @@ export default {
   },
   computed: {
     filteredLinks() {
-      const token = localStorage.getItem('token');
+
+      
+
+      const token = this.token;
       
       return this.links.filter(link => {
         if (token) {
@@ -54,7 +59,13 @@ export default {
       this.updateLinks();
     }
   },
-  mounted() {
+  async mounted() {
+    let user = await axios.post('https://checker.tg-service.pro/api/me')
+    if(user.status == 200){
+      if(user.data.email){
+        this.token = true;
+      }
+    }
     this.updateLinks(); 
     this.openDialog = false;
   },

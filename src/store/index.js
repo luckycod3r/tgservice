@@ -4,6 +4,7 @@ import { createStore } from 'vuex';
 const store = createStore({
   state: {
     isDark: false, 
+    meActive : false
   },
   mutations: {
     toggleTheme(state) {
