@@ -2,7 +2,7 @@
     <section id="payment" class="container flex flex-col px-4 justify-center justify-items-center gap-10">
         <h2 class="text-5xl font-semibold">Оплата</h2>
         <p>Введите сумму пополнения и нажмите Оплатить</p>
-        <form>
+        <form @submit.prevent>
             <label class="input input-bordered flex items-center gap-2 px-6 py-6">
                 <input type="number" v-model="sum" name="payment" aria-describedby="helper-text-explanation" class="grow" placeholder="Сумма пополнения (руб)" title="Сумма пополнения (руб)" />
             </label>
