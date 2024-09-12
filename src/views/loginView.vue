@@ -56,6 +56,8 @@ export default {
                 console.log(response);
                 if (response.status === 204) {
                     console.log(response);
+                    console.log(document.cookie)
+                    console.log(response.headers['set-cookie']);
                     
                     // alert('Вход выполнен успешно!');
                     // const token = response.data.access_token;
