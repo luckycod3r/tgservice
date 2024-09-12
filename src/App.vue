@@ -60,7 +60,7 @@ export default {
     }
   },
   async mounted() {
-    let user = await axios.post('https://checker.tg-service.pro/api/me')
+    let user = await axios.get('https://checker.tg-service.pro/api/me')
     if(user.status == 200){
       if(user.data.email){
         this.token = true;
