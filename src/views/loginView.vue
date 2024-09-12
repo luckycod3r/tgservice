@@ -47,17 +47,19 @@ export default {
                 const params = new URLSearchParams();
                 params.append('username', this.formData.email);
                 params.append('password', this.formData.password);
-                params.append('jwt_token', '')
-                const response = await axios.post("http://188.225.42.88:8011/auth/jwt/login?jwt_token=''", params, {
+                const response = await axios.post("https://checker.tg-service.pro/auth/jwt/login", params, {
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     }
                 });
-                if (response.status === 200) {
-                    alert('Вход выполнен успешно!');
-                    const token = response.data.access_token;
-                    localStorage.setItem('token', token);
-                    this.$router.push('/dashboard');
+                console.log(response);
+                if (response.status === 204) {
+                    console.log(response);
+                    
+                    // alert('Вход выполнен успешно!');
+                    // const token = response.data.access_token;
+                    // localStorage.setItem('token', token);
+                    // this.$router.push('/dashboard');
                 }
             } catch (error) {
                 if (error.response && error.response.data) {
@@ -67,6 +69,8 @@ export default {
                         alert('Ошибка входа: ' + error.response.data.detail);
                     }
                 } else {
+                    
+                    
                     alert('Произошла ошибка при входе. Попробуйте еще раз.');
                 }
             }
