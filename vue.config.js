@@ -4,7 +4,7 @@ const path = require('path');
 module.exports = defineConfig({
   devServer : {
     port : 3000,
-    disableHostCheck: true,  // Отключаем проверку заголовка Host
+    allowedHosts: "all",
     proxy: {
       '/api': {
         target: 'http://localhost:8011',  // Проксируем API запросы на FastAPI сервер
