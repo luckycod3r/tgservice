@@ -60,14 +60,23 @@ export default {
     }
   },
   async mounted() {
-    let user = await axios.get('https://checker.tg-service.pro/api/me')
-    if(user.status == 200){
-      if(user.data.email){
-        this.token = true;
+    try{
+        let user = await axios.get('https://checker.tg-service.pro/api/me')
+      if(user.status == 200){
+        if(user.data.email){
+          this.token = true;
+        }
+        else{
+          this.token = false;
+        }
       }
+      this.updateLinks(); 
+      this.openDialog = false;
     }
-    this.updateLinks(); 
-    this.openDialog = false;
+    catch(e){
+      this.updateLinks(); 
+    }
+    
   },
   methods: {
     handleToggleDialog() {
