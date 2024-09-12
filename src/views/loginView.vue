@@ -55,14 +55,8 @@ export default {
                 });
                 console.log(response);
                 if (response.status === 204) {
-                    console.log(response);
-                    console.log(document.cookie)
-                    console.log(response.headers['set-cookie']);
-                    
-                    // alert('Вход выполнен успешно!');
-                    // const token = response.data.access_token;
-                    // localStorage.setItem('token', token);
-                    // this.$router.push('/dashboard');
+                    alert('Вход выполнен успешно!');
+                    this.$router.push('/dashboard');
                 }
             } catch (error) {
                 if (error.response && error.response.data) {

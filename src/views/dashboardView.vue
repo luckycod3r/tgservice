@@ -56,23 +56,16 @@ export default {
             this.passwordVisible = !this.passwordVisible;
         },
         async validateToken() {
-            const token = localStorage.getItem('token');
-            if (!token) {
-                this.$router.push('/login');
-                return;
-            }
-
             try {
-                const response = await axios.post('http://188.225.42.88:8011/auth/verify', {
-                    token: token
-                });
-
-                this.email = response.data.email;
-
-                if (!response.data.is_active) {
-                    console.error('Аккаунт не активен.');
-                    localStorage.removeItem('token');
+                const response = await axios.get('https://checker.tg-service.pro/api/me');
+                if (!response.status != 200) {
+                    
                     this.$router.push('/login');
+                }
+                else{
+                    this.email = response.data.email;
+                    this.balance = response.data.balance;
+                    
                 }
 
             } catch (error) {
