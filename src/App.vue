@@ -57,7 +57,6 @@ export default {
   mounted() {
     this.updateLinks(); 
     this.openDialog = false;
-    console.log("Layout by Vkidik:", "https://t.me/young_vykqq");
   },
   methods: {
     handleToggleDialog() {
