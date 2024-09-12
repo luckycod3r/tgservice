@@ -58,8 +58,7 @@ export default {
         async validateToken() {
             try {
                 const response = await axios.get('https://checker.tg-service.pro/api/me');
-                if (!response.status != 200) {
-                    
+                if (response.status != 200) {
                     this.$router.push('/login');
                 }
                 else{
