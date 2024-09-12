@@ -5,7 +5,6 @@ module.exports = defineConfig({
   devServer : {
     port : 3000,
     disableHostCheck: true,  // Отключаем проверку заголовка Host
-    public: 'checker.tg-service.pro',  // Указываем публичный домен
     proxy: {
       '/api': {
         target: 'http://localhost:8011',  // Проксируем API запросы на FastAPI сервер
