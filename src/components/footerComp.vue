@@ -1,7 +1,7 @@
 <template>
     <footer class="themefooter text-neutral-content items-center p-4">
         <aside class="grid-flow-col items-center">
-          <p>© TG-Servise, {{ new Date().getFullYear() }}</p>
+          <p>© TG-Service, {{ new Date().getFullYear() }}</p>
         </aside>
         <nav class="grid-flow-col gap-4 md:place-self-center md:justify-self-end">
             <a href="/policy">Политика обработки данных</a>
