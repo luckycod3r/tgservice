@@ -48,6 +48,7 @@ export default {
                 params.append('username', this.formData.email);
                 params.append('password', this.formData.password);
                 const response = await axios.post("https://checker.tg-service.pro/auth/jwt/login", params, {
+                    withCredentials : true,
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     }
