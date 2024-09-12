@@ -49,7 +49,7 @@ export default {
         if (token) {
           return !(link.href === '/register' || link.href === '/login');
         } else {
-          return !(link.href === '/dashboard');
+          return !(link.href === '/dashboard' || link.href == '/payment');
         }
       });
     }
