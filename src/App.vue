@@ -65,6 +65,7 @@ export default {
       if(user.status == 200){
         if(user.data.email){
           this.token = true;
+          this.$store.state.meActive = true;
         }
         else{
           this.token = false;

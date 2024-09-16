@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import { mapState } from 'vuex';
 
 export default {
@@ -49,7 +50,7 @@ export default {
         return {
             text: '',
             lineNumbers: [1],
-            phoneNumbers: [79828430192,79828430192,79828430192,79828430192,79828430192,79828430192,79828430192,79828430192,79828430192,79828430192,79828430192,79828430192,79828430192,79828430192,79828430192,79828430192,79828430192,79828430192,79828430192,79828430192,79828430192,79828430192,79828430192,79828430192,], // Добавлен массив для хранения номеров
+            phoneNumbers: [], // Добавлен массив для хранения номеров
         };
     },
     computed: {
@@ -68,9 +69,25 @@ export default {
         getIllustrationSrc() {
             return this.isDark ? require('@/assets/illustrations/checker-dark.svg') : require('@/assets/illustrations/checker.svg');
         },
-        startCheck() {
-            // Добавьте логику проверки номеров здесь
-            // console.log(this.phoneNumbers);
+        async startCheck() {
+           
+            let request =  await axios.post('https://checket.tg-service.pro/api/start_check',{
+                "define_gender" : true,
+                "parse_bio" : true,
+                "numbers" : this.phoneNumbers
+            })
+            let task = request.data.task_id;
+            if(task){
+                this.$store.state.taskID = task;
+                let socket = new WebSocket("https://checket.tg-service.pro/task_ws?task_id=" + task);
+                socket.onmessage((ev)=>{
+                    let json = JSON.parse(ev);
+                    if(json.progress >= 99){
+                        this.$router.push('/checker/finish');
+                    }
+                })
+            }
+            
         }
     },
 }

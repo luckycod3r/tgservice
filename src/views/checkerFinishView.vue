@@ -13,10 +13,10 @@
 
             <div class="btns">
                 <div class="row">
-                    <a href="" class="btn">Скачать в .xlsx</a>
-                    <a href="" class="btn">Скачать в .txt</a>
+                    <a href="" class="btn" @click="download()">Скачать в .xlsx</a>
+                    <a href="" class="btn" @click="download()">Скачать в .txt</a>
                 </div>
-                <button class="btn btn-primary">Новая проверка</button>
+                <button class="btn btn-primary" @click="$router.push('/checker/')">Новая проверка</button>
             </div>
         </div>
     </section>
@@ -34,6 +34,9 @@ export default {
         getIllustrationSrc() {
             return this.isDark ? require('@/assets/illustrations/land_checker-dark.svg') : require('@/assets/illustrations/land_checker.svg');
         },
+        download(){
+            
+        }
     },
 }
 </script>
