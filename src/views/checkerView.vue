@@ -79,7 +79,7 @@ export default {
             let task = request.data.task_id;
             if(task){
                 this.$store.state.taskID = task;
-                let socket = new WebSocket("https://checket.tg-service.pro/task_ws?task_id=" + task);
+                let socket = new WebSocket("https://checket.tg-service.pro/api/task_ws?task_id=" + task);
                 socket.onmessage((ev)=>{
                     let json = JSON.parse(ev);
                     if(json.progress >= 99){
