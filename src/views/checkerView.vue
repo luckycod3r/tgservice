@@ -81,10 +81,8 @@ export default {
                 this.$store.state.taskID = task;
                 let socket = new WebSocket("wss://checker.tg-service.pro/api/task_ws?task_id=" + task);
                 socket.onmessage = (ev)=>{
-                    let json = JSON.parse(ev);
-                    if(json.progress >= 99){
-                        this.$router.push('/checker/finish');
-                    }
+                    console.log(ev);
+                    
                 }
             }
             
