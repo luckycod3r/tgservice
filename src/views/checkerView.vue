@@ -80,12 +80,12 @@ export default {
             if(request.status == 200){
                 this.$store.state.taskID = task;
                 let socket = new WebSocket("https://checker.tg-service.pro/api/task_ws?task_id=" + task);
-                socket.onmessage((ev)=>{
+                socket.onmessage = (ev)=>{
                     let json = JSON.parse(ev);
                     if(json.progress >= 99){
                         this.$router.push('/checker/finish');
                     }
-                })
+                }
             }
             
         }
