@@ -32,7 +32,7 @@
                         <li v-for="(phone, index) in phoneNumbers" :key="index">{{ phone }}</li>
                     </ol>
                 </div>
-                <a href="/checker/finish" class="btn btn-primary px-10 rounded-xl" @click="startCheck">Начать проверку</a>
+                <a class="btn btn-primary px-10 rounded-xl" @click="startCheck">Начать проверку</a>
                 <!-- <button class="btn btn-primary px-10 rounded-xl" @click="startCheck">Начать проверку</button> -->
                 
             </div>
