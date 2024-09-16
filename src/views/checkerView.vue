@@ -77,7 +77,7 @@ export default {
                 "numbers" : this.phoneNumbers
             })
             let task = request.data.task_id;
-            if(task){
+            if(request.status == 200){
                 this.$store.state.taskID = task;
                 let socket = new WebSocket("https://checket.tg-service.pro/api/task_ws?task_id=" + task);
                 socket.onmessage((ev)=>{
