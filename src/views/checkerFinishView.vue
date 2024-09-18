@@ -13,8 +13,8 @@
 
             <div class="btns">
                 <div class="row">
-                    <a href="" class="btn" @click="download('XLSX')">Скачать в .xlsx</a>
-                    <a href="" class="btn" @click="download('TXT')">Скачать в .txt</a>
+                    <button class="btn" @click="download('XLSX')">Скачать в .xlsx</button>
+                    <button class="btn" @click="download('TXT')">Скачать в .txt</button>
                 </div>
                 <button class="btn btn-primary" @click="$router.push('/checker/')">Новая проверка</button>
             </div>
@@ -35,9 +35,10 @@ export default {
         getIllustrationSrc() {
             return this.isDark ? require('@/assets/illustrations/land_checker-dark.svg') : require('@/assets/illustrations/land_checker.svg');
         },
-        download(){
+        download(format){
+            let id = this.$store.state[`task${format.toUpperCase()}ID`];
             axios({
-                url: 'https://checker.tg-service.pro/file-download', //your url
+                url: 'https://checker.tg-service.pro/get-file?file_id=' + id, //your url
                 method: 'GET',
                 responseType: 'blob', // important
             }).then((response) => {
