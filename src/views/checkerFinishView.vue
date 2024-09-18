@@ -48,7 +48,7 @@ export default {
                 // create "a" HTML element with href to file & click
                 const link = document.createElement('a');
                 link.href = href;
-                link.setAttribute('download', 'file.pdf'); //or any other extension
+                link.setAttribute('download', 'result.' + format.toLowerCase()); //or any other extension
                 document.body.appendChild(link);
                 link.click();
 

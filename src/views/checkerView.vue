@@ -32,7 +32,11 @@
                         <li v-for="(phone, index) in phoneNumbers" :key="index">{{ phone }}</li>
                     </ol>
                 </div>
-                <a class="btn btn-primary px-10 rounded-xl" @click="startCheck">Начать проверку</a>
+                <button class="btn btn-primary px-10 rounded-xl" @click="startCheck">
+                    <span class="text">Начать проверку</span>
+                    <div class="btn-progress" :style="`--progress: ${progress}%`"></div>
+                </button>
+                
                 <!-- <button class="btn btn-primary px-10 rounded-xl" @click="startCheck">Начать проверку</button> -->
                 
             </div>
@@ -49,6 +53,7 @@ export default {
     data() {
         return {
             text: '',
+            progress: 100,
             lineNumbers: [1],
             phoneNumbers: [], // Добавлен массив для хранения номеров
         };
@@ -70,7 +75,7 @@ export default {
             return this.isDark ? require('@/assets/illustrations/checker-dark.svg') : require('@/assets/illustrations/checker.svg');
         },
         async startCheck() {
-           
+            this.progress = 0;
             let request =  await axios.post('https://checker.tg-service.pro/api/start_check',{
                 "define_gender" : true,
                 "parse_bio" : true,
@@ -83,10 +88,14 @@ export default {
                 socket.onmessage = (ev)=>{
                     let json = JSON.parse(ev.data);
                     if(json.txt_file_id){
+                        this.progress = 100;
                         this.$store.state.taskTXTID = json.txt_file_id;
                         this.$store.state.taskXLSXID = json.xlsx_file_id;
                         this.$router.push('/checker/finish');
                         
+                    }
+                    else{
+                        this.progress = json.progress;
                     }
                 }
             }
@@ -107,19 +116,40 @@ export default {
         flex-direction: column;
       }
 }
-
+.text{
+    position: relative;
+    z-index: 2;
+}
 .btn-primary {
-    background-color: #419FD9;
+    
+    background-size: 20px 20px;
     color: white;
     transition: background-color 0.3s;
     width: 100%;
     height: 70px;
     max-width: 400px;
     font-size: smaller;
-  
+
+    position: relative;
+    overflow: hidden;
     &:hover {
       background-color: #317aab;
     }
+}
+[data-theme="dark"] .btn-primary{
+    background-color: rgba(35, 44, 54, 1);
+}
+[data-theme="light"] .btn-primary{
+    color: rgba(36, 36, 36, 1);
+    background-color: rgba(242, 242, 242, 1);
+}
+.btn-progress{
+    background-color: #419FD9;
+    height: 100%;
+    width: var(--progress);
+    left: 0;
+    position: absolute;
+    z-index: 1;
 }
 
 .info {
@@ -136,6 +166,7 @@ export default {
         flex-direction: column;
       }
 }
+
 
 .illustration {
     flex: 1;
