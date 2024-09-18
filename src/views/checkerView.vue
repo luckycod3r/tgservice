@@ -33,7 +33,7 @@
                     </ol>
                 </div>
                 <button :disabled="progress != 100" class="btn btn-primary px-10 rounded-xl" @click="startCheck">
-                    <span class="text">{{text}}</span>
+                    <span class="text">{{btnText}}</span>
                     <div class="btn-progress" :style="`--progress: ${progress}%`"></div>
                 </button>
                 
@@ -52,7 +52,8 @@ export default {
     name: "checkerView",
     data() {
         return {
-            text: 'Начать проверку',
+            text: '',
+            btnText : 'Начать проверку',
             progress: 100,
             lineNumbers: [1],
             phoneNumbers: [], // Добавлен массив для хранения номеров
@@ -84,7 +85,7 @@ export default {
             let task = request.data.task_id;
             if(request.status == 200){
                 this.progress = 0;
-                this.text = "Идет проверка..."
+                this.btnText = "Идет проверка..."
                 let socket = new WebSocket("wss://checker.tg-service.pro/api/task_ws?task_id=" + task);
                 socket.onmessage = (ev)=>{
                     let json = JSON.parse(ev.data);
@@ -93,7 +94,7 @@ export default {
                         this.$store.state.taskTXTID = json.txt_file_id;
                         this.$store.state.taskXLSXID = json.xlsx_file_id;
                         this.$router.push('/checker/finish');
-                        this.text = 'Начать проверку'
+                        this.btnText = 'Начать проверку'
                     }
                     else{
                         this.progress = json.progress;
