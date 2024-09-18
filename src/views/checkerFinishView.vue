@@ -38,7 +38,7 @@ export default {
         download(format){
             let id = this.$store.state[`task${format.toUpperCase()}ID`];
             axios({
-                url: 'https://checker.tg-service.pro/get-file?file_id=' + id, //your url
+                url: 'https://checker.tg-service.pro/api/get_file?file_id=' + id, //your url
                 method: 'GET',
                 responseType: 'blob', // important
             }).then((response) => {
