@@ -13,8 +13,8 @@
 
             <div class="btns">
                 <div class="row">
-                    <a href="" class="btn" @click="download()">Скачать в .xlsx</a>
-                    <a href="" class="btn" @click="download()">Скачать в .txt</a>
+                    <a href="" class="btn" @click="download('XLSX')">Скачать в .xlsx</a>
+                    <a href="" class="btn" @click="download('TXT')">Скачать в .txt</a>
                 </div>
                 <button class="btn btn-primary" @click="$router.push('/checker/')">Новая проверка</button>
             </div>
@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import { mapState } from 'vuex';
 
 export default {
@@ -35,7 +36,25 @@ export default {
             return this.isDark ? require('@/assets/illustrations/land_checker-dark.svg') : require('@/assets/illustrations/land_checker.svg');
         },
         download(){
-            
+            axios({
+                url: 'https://checker.tg-service.pro/file-download', //your url
+                method: 'GET',
+                responseType: 'blob', // important
+            }).then((response) => {
+                // create file link in browser's memory
+                const href = URL.createObjectURL(response.data);
+
+                // create "a" HTML element with href to file & click
+                const link = document.createElement('a');
+                link.href = href;
+                link.setAttribute('download', 'file.pdf'); //or any other extension
+                document.body.appendChild(link);
+                link.click();
+
+                // clean up "a" element & remove ObjectURL
+                document.body.removeChild(link);
+                URL.revokeObjectURL(href);
+            });
         }
     },
 }

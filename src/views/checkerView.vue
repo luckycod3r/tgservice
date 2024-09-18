@@ -78,11 +78,16 @@ export default {
             })
             let task = request.data.task_id;
             if(request.status == 200){
-                this.$store.state.taskID = task;
+                
                 let socket = new WebSocket("wss://checker.tg-service.pro/api/task_ws?task_id=" + task);
                 socket.onmessage = (ev)=>{
-                    console.log(ev);
-                    
+                    let json = JSON.parse(ev.data);
+                    if(json.txt_file_id){
+                        this.$store.state.taskTXTID = json.txt_file_id;
+                        this.$store.state.taskXLSXID = json.xlsx_file_id;
+                        this.$router.push('/checker/finish');
+                        
+                    }
                 }
             }
             
