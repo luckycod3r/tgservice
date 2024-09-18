@@ -1,11 +1,11 @@
 <template>
   <div id="app">
-    <headerComp :links="filteredLinks" @toggle-dialog="handleToggleDialog"/>
+    <headerComp :links="allowLinks" @toggle-dialog="handleToggleDialog"/>
     <main>
       <router-view/>
     </main>
     <footerComp/>
-    <dialogNavComp v-if="openDialog" :links="filteredLinks"/>
+    <dialogNavComp v-if="openDialog" :links="allowLinks"/>
   </div>
 </template>
 
@@ -26,6 +26,7 @@ export default {
     return {
       openDialog: false,
       token : false,
+      allowLinks : [],
       links: [
         { name: 'О сервисе', href: '/' },
         { name: 'Чекер', href: '/checker' },
@@ -36,22 +37,6 @@ export default {
         { name: 'Вход', href: '/login' },
         { name: 'Аккаунт', href: '/dashboard' }
       ],
-    }
-  },
-  computed: {
-    filteredLinks() {
-
-      
-
-      const token = this.token;
-      
-      return this.links.filter(link => {
-        if (token) {
-          return !(link.href === '/register' || link.href === '/login');
-        } else {
-          return !(link.href === '/dashboard' || link.href == '/payment');
-        }
-      });
     }
   },
   watch: {
@@ -66,6 +51,7 @@ export default {
         if(user.data.email){
           this.token = true;
           this.$store.state.meActive = true;
+          this.updateLinks();
         }
         else{
           this.token = false;
@@ -77,6 +63,17 @@ export default {
     catch(e){
       this.updateLinks(); 
     }
+    const token = this.token;
+      
+    this.allowLinks =  this.links.filter(link => {
+        if (token) {
+          return !(link.href === '/register' || link.href === '/login');
+        } else {
+          return !(link.href === '/dashboard' || link.href == '/payment'  || link.href == '/checker');
+        }
+      });
+    console.log(this.allowLinks);
+    
     
   },
   methods: {
@@ -84,7 +81,15 @@ export default {
       this.openDialog = !this.openDialog;
     },
     updateLinks() {
-      this.$forceUpdate(); 
+      let token = this.token;
+      this.allowLinks =  this.links.filter(link => {
+        if (token) {
+          return !(link.href === '/register' || link.href === '/login');
+        } else {
+          return !(link.href === '/dashboard' || link.href == '/payment' || link.href == '/checker');
+        }
+      });
+      // this.$forceUpdate(); 
     }
   }
 }

@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import landingView from '../views/landingView.vue'
+import axios from 'axios';
+import store from '@/store';
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
@@ -12,20 +14,32 @@ const router = createRouter({
     {
       path: '/checker',
       name: 'Чекер',
+      meta : {
+        guard : true
+      },
       component: () => import(/* webpackChunkName: "checker" */ '../views/checkerView.vue'),
     },
     {
       path: '/checker/finish',
       name: 'Чекер - Результаты',
+      meta : {
+        guard : true
+      },
       component: () => import(/* webpackChunkName: "payment" */ '../views/checkerFinishView.vue')
     },
     {
       path: '/dashboard',
       name: 'Личный аккаунт',
+      meta : {
+        guard : true
+      },
       component: () => import(/* webpackChunkName: "payment" */ '../views/dashboardView.vue')
     },
     {
       path: '/payment',
+      meta : {
+        guard : true
+      },
       name: 'Оплата',
       component: () => import(/* webpackChunkName: "payment" */ '../views/paymentView.vue')
     },
@@ -62,9 +76,36 @@ const router = createRouter({
   ]
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   document.title = `TG•Service - ${to.name}`;
-  next();
+  try {
+    
+    if(to.meta.guard && !store.state.meActive){
+    
+      let user = await axios.get('https://checker.tg-service.pro/api/me')
+      if(user.status == 200){
+        if(user.data.email){
+          store.state.meActive = true;
+          next()
+        }
+        else{
+          router.push('/')
+        }
+      }
+      else{
+        router.push('/')
+      }
+    }
+    else{
+      next();
+    }
+  } catch (error) {
+    console.log(error);
+    
+    router.push('/')
+  }
+  
+  
 });
 
 export default router

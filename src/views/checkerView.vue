@@ -32,8 +32,8 @@
                         <li v-for="(phone, index) in phoneNumbers" :key="index">{{ phone }}</li>
                     </ol>
                 </div>
-                <button class="btn btn-primary px-10 rounded-xl" @click="startCheck">
-                    <span class="text">Начать проверку</span>
+                <button :disabled="progress != 100" class="btn btn-primary px-10 rounded-xl" @click="startCheck">
+                    <span class="text">{{text}}</span>
                     <div class="btn-progress" :style="`--progress: ${progress}%`"></div>
                 </button>
                 
@@ -52,7 +52,7 @@ export default {
     name: "checkerView",
     data() {
         return {
-            text: '',
+            text: 'Начать проверку',
             progress: 100,
             lineNumbers: [1],
             phoneNumbers: [], // Добавлен массив для хранения номеров
@@ -75,7 +75,7 @@ export default {
             return this.isDark ? require('@/assets/illustrations/checker-dark.svg') : require('@/assets/illustrations/checker.svg');
         },
         async startCheck() {
-            this.progress = 0;
+            
             let request =  await axios.post('https://checker.tg-service.pro/api/start_check',{
                 "define_gender" : true,
                 "parse_bio" : true,
@@ -83,7 +83,8 @@ export default {
             })
             let task = request.data.task_id;
             if(request.status == 200){
-                
+                this.progress = 0;
+                this.text = "Идет проверка..."
                 let socket = new WebSocket("wss://checker.tg-service.pro/api/task_ws?task_id=" + task);
                 socket.onmessage = (ev)=>{
                     let json = JSON.parse(ev.data);
@@ -92,12 +93,15 @@ export default {
                         this.$store.state.taskTXTID = json.txt_file_id;
                         this.$store.state.taskXLSXID = json.xlsx_file_id;
                         this.$router.push('/checker/finish');
-                        
+                        this.text = 'Начать проверку'
                     }
                     else{
                         this.progress = json.progress;
                     }
                 }
+            }
+            else if(request.status == 403){
+                alert("На вашем счете недостаточно средств")
             }
             
         }
