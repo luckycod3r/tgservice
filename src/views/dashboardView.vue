@@ -78,7 +78,10 @@ export default {
             await axios.post("https://checker.tg-service.pro/api/auth/jwt/logout");
             this.$router.push('/')
             this.$store.state.meActive = false;
-            this.$event.emit("update-header");
+            setTimeout(() => {
+                this.$event.emit("update-header");    
+            }, 200);
+            
         },
         async resetPassword() {
             const token = localStorage.getItem('token');
