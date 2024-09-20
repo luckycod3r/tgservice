@@ -32,7 +32,7 @@ import axios from 'axios';
                     sum : this.sum
                         })
                         if(info.status == 200){
-                            window.open(info.link)
+                            window.open(info.data.link)
                         }
                 }
                

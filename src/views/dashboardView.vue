@@ -75,7 +75,7 @@ export default {
             }
         },
         async logout(){
-            await axios.post("https://checker.tg-service.pro/auth/jwt/logout");
+            await axios.post("https://checker.tg-service.pro/api/auth/jwt/logout");
             this.$router.push('/')
             this.$store.state.meActive = false;
             this.$event.emit("update-header");
