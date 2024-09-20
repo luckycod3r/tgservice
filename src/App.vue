@@ -39,11 +39,6 @@ export default {
       ],
     }
   },
-  watch: {
-    '$route'() {
-      this.updateLinks();
-    }
-  },
   async mounted() {
     try{
         let user = await axios.get('https://checker.tg-service.pro/api/me')
