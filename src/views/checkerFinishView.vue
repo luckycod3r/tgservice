@@ -67,4 +67,15 @@ export default {
         height: 100%;
         width: 100%;
     }
+    .btns{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .btns .row{
+        display: flex;
+        gap: 10px;
+    }
 </style>

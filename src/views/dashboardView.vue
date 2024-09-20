@@ -29,6 +29,7 @@
                 </kbd>
             </label>
             <button type="submit" class="btn btn-primary px-12 rounded-xl">Сохранить</button>
+            <button type="submit" class="btn btn-danger px-12 rounded-xl" @click="logout()">Выйти из аккаунта</button>
         </form>
     </section>
 </template>
@@ -73,6 +74,12 @@ export default {
                 
             }
         },
+        async logout(){
+            await axios.post("https://checker.tg-service.pro/auth/jwt/logout");
+            this.$router.push('/')
+            this.$store.state.meActive = false;
+            this.$event.emit("update-header");
+        },
         async resetPassword() {
             const token = localStorage.getItem('token');
 
@@ -82,7 +89,7 @@ export default {
             }
 
             try {
-                const response = await axios.post('http://188.225.42.88:8011/auth/reset-password', {
+                const response = await axios.post('https://checker.tg-service.pro/auth/reset-password', {
                     token: token,
                     password: this.newPassword
                 });
@@ -168,6 +175,26 @@ form{
   
     &:hover {
       background-color: #317aab;
+    }
+}
+.btn-danger {
+    background-color: #d94141;
+    color: white;
+    transition: background-color 0.3s;
+    font-size: smaller;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    &.btn{
+        width: 100%;
+        height: 70px;
+        max-width: 500px;
+    }
+  
+    &:hover {
+      background-color: #ab3131;
     }
 }
 

@@ -32,10 +32,22 @@
                         <li v-for="(phone, index) in phoneNumbers" :key="index">{{ phone }}</li>
                     </ol>
                 </div>
+                <div class="checks flex justify-between w-[79%]">
+                    <label class="label flex gap-2 cursor-pointer">
+                    <span class="label-text">Определять пол</span>
+                    <input  v-model="parseGender" type="checkbox" checked="checked" class="checkbox" />
+                </label>
+                <label class="label flex gap-2 cursor-pointer">
+                    <span class="label-text">Парсить био</span>
+                    <input v-model="parseBio" type="checkbox" checked="checked" class="checkbox" />
+                </label>
+                </div>
                 <button :disabled="progress != 100" class="btn btn-primary px-10 rounded-xl" @click="startCheck">
                     <span class="text">{{btnText}}</span>
                     <div class="btn-progress" :style="`--progress: ${progress}%`"></div>
                 </button>
+               
+                
                 
                 <!-- <button class="btn btn-primary px-10 rounded-xl" @click="startCheck">Начать проверку</button> -->
                 
@@ -53,6 +65,8 @@ export default {
     data() {
         return {
             text: '',
+            parseBio : true,
+            parseGender : true,
             btnText : 'Начать проверку',
             progress: 100,
             lineNumbers: [1],
@@ -78,8 +92,8 @@ export default {
         async startCheck() {
             
             let request =  await axios.post('https://checker.tg-service.pro/api/start_check',{
-                "define_gender" : true,
-                "parse_bio" : true,
+                "define_gender" : this.parseGender,
+                "parse_bio" : this.parseBio,
                 "numbers" : this.phoneNumbers
             })
             let task = request.data.task_id;
@@ -294,5 +308,11 @@ textarea {
     justify-content: space-between;
     align-items: center;
     overflow: hidden; /* Ограничиваем переполнение */
+}
+
+input[type="checkbox"]{
+    --chkbg: oklch(0.64 0.17 258.42);
+    --chkfg: oklch(0.92 0 0);
+    border: 2px solid rgba(0,0,0,0.2) !important;
 }
 </style>

@@ -74,6 +74,17 @@ export default {
       });
     console.log(this.allowLinks);
     
+    this.$event.on('update-header',()=>{
+      console.log("update links");
+      
+      this.allowLinks =  this.links.filter(link => {
+        if (this.$store.state.meActive) {
+          return !(link.href === '/register' || link.href === '/login');
+        } else {
+          return !(link.href === '/dashboard' || link.href == '/payment'  || link.href == '/checker');
+        }
+      });
+    })
     
   },
   methods: {

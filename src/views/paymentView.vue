@@ -19,17 +19,23 @@ import axios from 'axios';
         name: "paymentView",
         data(){
             return {
-                sum : 0
+                sum : ""
             }
         },
         methods : {
             async startPayment(){
-                let info = await axios.post("https://checker.tg-service.pro/api/billing",{
+                if(Number(this.sum) > 0){
+                    if(this.sum > 9999){
+                        this.sum = 9999;
+                    }
+                    let info = await axios.post("https://checker.tg-service.pro/api/billing",{
                     sum : this.sum
-                })
-                if(info.status == 200){
-                    window.open(info.link,"_blank")
+                        })
+                        if(info.status == 200){
+                            window.open(info.link)
+                        }
                 }
+               
                 
             }
         }
