@@ -57,7 +57,10 @@ export default {
                 if (response.status === 204) {
                     this.$router.push('/dashboard');
                     this.$store.state.meActive = true;
-                    this.$event.emit("update-header");
+                    setTimeout(() => {
+                        this.$event.emit("update-header");    
+                    }, 300);
+                    
                 }
             } catch (error) {
                 if (error.response && error.response.data) {
