@@ -13,6 +13,8 @@
                 <p>
                     Можно использовать различные форматы номеров, например: +79828430192, 89828430192, +7(982)843-01-92, +7 982 843 01 92
                 </p>
+                <p>Когда начинается проверка, на вашем балансе временно блокируется сумма, равная стоимости успешной проверки + био (если включено) + определение гендера (если включено), умноженной на количество номеров. После проверки с баланса списывается итоговая сумма, но за те номера, которые не найдены, снимается только стоимость попытки проверки
+                </p>
                 <img :src="getIllustrationSrc()" alt="illustration-about">
             </div>
             <div class="checker gap-4">
@@ -29,21 +31,22 @@
                 </div>
                 <div class="list-container">
                     <ol class="list flex flex-col items-center justify-start custom-list font-thin">
-                        <li v-for="(phone, index) in phoneNumbers" :key="index">{{ phone }}</li>
+                        <li v-for="(phone, index) in phoneNumbers" :ref="`line_${index}`" :key="index">{{ phone }}</li>
                     </ol>
                 </div>
-                <div class="checks flex justify-between w-[79%]">
+                <p class="info-bio-gender">Парсить био - будут собраны описания профилей.<br><br>Определение пола - будет определен пол юзера по его имени. Определение возможно примерно в 50% случаев. Если пол определён - он верен на 90%.</p>
+                <div class="checks md:flex-row flex-column p-4 md:p-0 justify-between w-[90%] md:w-[80%]">
                     <label class="label flex gap-2 cursor-pointer">
-                    <span class="label-text">Определять пол</span>
+                    <span class="label-text">Определить пол (+{{ tariffs.gender }} ₽)</span>
                     <input  v-model="parseGender" type="checkbox" checked="checked" class="checkbox" />
                 </label>
                 <label class="label flex gap-2 cursor-pointer">
-                    <span class="label-text">Парсить био</span>
+                    <span class="label-text">Парсить био (+{{ tariffs.bio }} ₽)</span>
                     <input v-model="parseBio" type="checkbox" checked="checked" class="checkbox" />
                 </label>
                 </div>
-                <button :disabled="progress != 100" class="btn btn-primary px-10 rounded-xl" @click="startCheck">
-                    <span class="text">{{btnText}}</span>
+                <button :disabled="progress != 100 || loading" class="btn btn-primary px-10 rounded-xl" @click="startCheck">
+                    <span class="text">{{btnText}} <span v-if="progress == 100 && phoneNumbers.length > 0">({{ (tariffs.success + ((parseBio) ? tariffs.bio : 0) + ((parseGender) ? tariffs.gender : 0)) * phoneNumbers.length }} ₽)</span></span>
                     <div class="btn-progress" :style="`--progress: ${progress}%`"></div>
                 </button>
                
@@ -65,23 +68,57 @@ export default {
     data() {
         return {
             text: '',
+            loading : true,
             parseBio : true,
             parseGender : true,
             btnText : 'Начать проверку',
+            failNums : false,
+            tariffs : [],
             progress: 100,
             lineNumbers: [1],
             phoneNumbers: [], // Добавлен массив для хранения номеров
         };
+    },
+    async mounted(){
+        let tariffs = await axios.get("https://checker.tg-service.pro/api/tariffs");
+        let content = tariffs.data;
+        this.tariffs = content;
+        this.btnText = `Начать проверку`
+        this.loading = false;
     },
     computed: {
         ...mapState(['isDark']),
     },
     methods: {
         updateLineNumbers() {
+            
+            
             const lines = this.text.split('\n').length;
             this.lineNumbers = Array.from({ length: lines }, (_, i) => i + 1);
             // Обновляем массив phoneNumbers при изменении текста
             this.phoneNumbers = this.text.split('\n').filter(line => line.trim() !== '');
+            let regex = /^\+\d{1,3}\s?\(?\d{1,4}\)?[\s-]?\d{1,4}[\s-]?\d{1,4}[\s-]?\d{1,4}$/;
+            for(let i in this.phoneNumbers){
+                let line = Number(i)+1;
+                
+                let phone = this.phoneNumbers[Number(i)];
+                if(!regex.test(phone)){
+                    console.log("error in line " + line);
+                    setTimeout(() => {
+                        this.$refs[`line_${i}`][0].classList.add("errorString");   
+                        
+                    }, 100);
+                    
+                }
+                else{
+                    setTimeout(() => {
+                        this.$refs[`line_${i}`][0].classList.remove("errorString");    
+                        
+                    }, 100);
+                }
+
+                
+            }
         },
         syncScroll() {
             this.$refs.lineNumbers.scrollTop = this.$refs.textarea.scrollTop;
@@ -90,7 +127,16 @@ export default {
             return this.isDark ? require('@/assets/illustrations/checker-dark.svg') : require('@/assets/illustrations/checker.svg');
         },
         async startCheck() {
-            
+            if(this.phoneNumbers.length == 0) return;
+            if(document.querySelectorAll(".errorString").length > 0){
+                return;
+            }
+
+            let summ = (this.tariffs.success + ((this.parseBio) ? this.tariffs.bio : 0) + ((this.parseGender) ? this.tariffs.gender : 0)) * this.phoneNumbers.length;
+
+            if(this.$store.state.userData.balance < summ){
+                return alert("На вашем счёте недостаточно средств")
+            }
             let request =  await axios.post('https://checker.tg-service.pro/api/start_check',{
                 "define_gender" : this.parseGender,
                 "parse_bio" : this.parseBio,
@@ -155,12 +201,20 @@ export default {
       background-color: #317aab;
     }
 }
+.errorString{
+    color: red;
+}
 [data-theme="dark"] .btn-primary{
     background-color: rgba(35, 44, 54, 1);
 }
 [data-theme="light"] .btn-primary{
     color: rgba(36, 36, 36, 1);
     background-color: rgba(242, 242, 242, 1);
+}
+.info-bio-gender{
+    font-size: 0.85em;
+    max-width: 400px;
+    padding: 10px;
 }
 .btn-progress{
     background-color: #419FD9;
@@ -204,7 +258,7 @@ export default {
 
 .list {
     height: 100%;
-    width: 60%;
+    width: 100%;
     overflow-y: auto;
 
     /* Стили для скроллбара */
@@ -278,7 +332,7 @@ textarea {
     counter-reset: custom-counter; 
 
     &.list li {
-        width: 150px;
+        width: 200px;
         padding-left: 50px;
 
         &:before {
@@ -304,6 +358,7 @@ textarea {
 .checker {
     flex: 1;
     display: flex;
+    height: max-content;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;

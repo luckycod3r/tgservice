@@ -3,7 +3,8 @@ import { createStore } from 'vuex';
 
 const store = createStore({
   state: {
-    isDark: false, 
+    isDark: false,
+    userData : {},
     meActive : false
   },
   mutations: {

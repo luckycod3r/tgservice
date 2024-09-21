@@ -46,6 +46,7 @@ export default {
         if(user.data.email){
           this.token = true;
           this.$store.state.meActive = true;
+          this.$store.state.userData = user.data;
           this.updateLinks();
         }
         else{
