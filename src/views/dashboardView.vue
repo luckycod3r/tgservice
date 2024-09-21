@@ -65,6 +65,7 @@ export default {
                 else{
                     this.email = response.data.email;
                     this.balance = response.data.balance;
+                    this.$store.state.userData = response.data;
                     
                 }
 
