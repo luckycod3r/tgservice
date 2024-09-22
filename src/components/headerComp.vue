@@ -15,7 +15,7 @@
           <RouterLink class="header__nav-list-item-link" :to="link.href">{{ link.name }}</RouterLink>
         </li>
         <li class="header__nav-list-item theme">
-          <label class="grid cursor-pointer place-items-center">
+          <label class="grid cursor-pointer place-items-center" style="position: relative;">
             <input
               type="checkbox"
               :checked="isDark"
@@ -25,6 +25,7 @@
             <svg
               v-if="!isDark"
               class="stroke-base-100 fill-base-100 col-start-1 row-start-1"
+              style="position: absolute; left: 4px;"
               xmlns="http://www.w3.org/2000/svg"
               width="14"
               height="14"
@@ -42,6 +43,7 @@
             </svg>
             <svg
               v-if="isDark"
+              style="position: absolute; right: 4px;"
               class="stroke-base-100 fill-base-100 col-start-2 row-start-1"
               xmlns="http://www.w3.org/2000/svg"
               width="14"
@@ -118,6 +120,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.toggle{
+  border: 1px solid rgba(0,0,0,0.5);
+}
 .header {
   width: 100%;
   padding: 1.5rem 1.5rem;

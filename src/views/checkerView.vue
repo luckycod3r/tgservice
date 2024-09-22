@@ -127,8 +127,9 @@ export default {
             return this.isDark ? require('@/assets/illustrations/checker-dark.svg') : require('@/assets/illustrations/checker.svg');
         },
         async startCheck() {
-            if(this.phoneNumbers.length == 0) return;
+            if(this.phoneNumbers.length == 0) return alert("Вы не ввели список номеров для проверки");
             if(document.querySelectorAll(".errorString").length > 0){
+                alert("Проверьте правильность номеров телефона")
                 return;
             }
 
@@ -368,6 +369,9 @@ textarea {
 input[type="checkbox"]{
     --chkbg: oklch(0.64 0.17 258.42);
     --chkfg: oklch(0.92 0 0);
-    border: 2px solid rgba(0,0,0,0.2) !important;
+    border: 2px solid rgba(0,0,0,0.5);
+}
+[data-theme="dark"] input[type="checkbox"]{
+    border: 2px solid rgba(255,255,255,0.2) !important;
 }
 </style>
