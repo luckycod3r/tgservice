@@ -193,7 +193,7 @@ export default {
     transition: background-color 0.3s;
     width: 100%;
     height: 70px;
-    max-width: 400px;
+    max-width: 380px;
     font-size: smaller;
 
     position: relative;
@@ -215,7 +215,7 @@ export default {
 .info-bio-gender{
     font-size: 0.85em;
     max-width: 400px;
-    padding: 10px;
+    padding: 10px 20px;
 }
 .btn-progress{
     background-color: #419FD9;
