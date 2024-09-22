@@ -97,7 +97,7 @@ export default {
             this.lineNumbers = Array.from({ length: lines }, (_, i) => i + 1);
             // Обновляем массив phoneNumbers при изменении текста
             this.phoneNumbers = this.text.split('\n').filter(line => line.trim() !== '');
-            let regex = /^\+\d{1,3}\s?\(?\d{1,4}\)?[\s-]?\d{1,4}[\s-]?\d{1,4}[\s-]?\d{1,4}$/;
+            let regex = /^(\+?\d{1,3})?\s?\(?\d{1,4}\)?[\s-]?\d{1,4}[\s-]?\d{1,4}[\s-]?\d{1,4}$/;
             for(let i in this.phoneNumbers){
                 let line = Number(i)+1;
                 
