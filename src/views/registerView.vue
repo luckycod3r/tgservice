@@ -53,8 +53,26 @@ export default {
                     }
                 });
                 if (response.status === 201) {
-                    alert('Регистрация прошла успешно!');
-                    this.$router.push('/login');
+                    const params = new URLSearchParams();
+                    params.append('username', this.formData.email);
+                    params.append('password', this.formData.password);
+                    const response = await axios.post("https://checker.tg-service.pro/api/auth/jwt/login", params, {
+                        withCredentials : true,
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        }
+                    });
+                    console.log(response);
+                    if (response.status === 204) {
+                        this.$router.push('/dashboard');
+                        this.$store.state.meActive = true;
+                        
+                        setTimeout(() => {
+                            this.$event.emit("update-header");    
+                        }, 300);
+                        
+                    }
+                    
                 }
             } catch (error) {
                 if (error.response && error.response.data) {

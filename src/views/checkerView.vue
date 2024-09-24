@@ -1,7 +1,7 @@
 <template>
     <section id="checker" class="flex">
         <div class="container flex">
-            <div class="info flex flex-col gap-4 px-4 py-3">
+            <div class="info flex flex-col gap-4  py-3">
                 <h2 class="text-5xl font-semibold">Чекер</h2>
                 <p>
                     Чтобы добавить телефон в список поиска, используйте один из сценариев:
@@ -35,7 +35,7 @@
                     </ol>
                 </div>
                 <p class="info-bio-gender">Парсить био - будут собраны описания профилей.<br><br>Определение пола - будет определен пол юзера по его имени. Определение возможно примерно в 50% случаев. Если пол определён - он верен на 90%.</p>
-                <div class="checks md:flex-row flex-column p-4 md:p-0 justify-between w-[90%] md:w-[80%]">
+                <div class="checks md:flex-row flex-column p-4 md:p-0 justify-between w-[90%] md:w-[75%]">
                     <label class="label flex gap-2 cursor-pointer">
                     <span class="label-text">Определить пол (+{{ tariffs.gender }} ₽)</span>
                     <input  v-model="parseGender" type="checkbox" checked="checked" class="checkbox" />
@@ -175,13 +175,15 @@ export default {
 <style lang="scss" scoped>
 #checker, .container{
     flex-direction: row;
-
+    
     @media (max-width: 768px) {
         align-items: center;
         justify-content: center;
         flex-direction: column;
+        width: 95%;
       }
 }
+
 .text{
     position: relative;
     z-index: 2;
@@ -230,7 +232,6 @@ export default {
     flex: 1; 
     max-width: 600px;
     margin-top: -20px;
-    margin-right: 20px;
     align-items: start;
     font-size: .85rem;
 
@@ -299,7 +300,7 @@ export default {
     padding: 10px;
     font-family: Arial, sans-serif;
     height: 135px; /* Фиксированная высота контейнера */
-    width: 400px;
+    width: 350px;
     overflow: hidden;
 }
 
