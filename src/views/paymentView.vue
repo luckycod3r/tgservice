@@ -4,7 +4,7 @@
         <p>Введите сумму пополнения и нажмите Оплатить</p>
         <form @submit.prevent>
             <label class="input input-bordered flex items-center gap-2 px-6 py-6">
-                <input type="number" v-model="sum" name="payment" aria-describedby="helper-text-explanation" class="grow" placeholder="Сумма пополнения (руб)" title="Сумма пополнения (руб)" />
+                <input type="number" v-model="sum" name="payment" aria-describedby="helper-text-explanation" class="grow" placeholder="Сумма пополнения (от 100 руб)" title="Сумма пополнения (руб)" />
             </label>
             <button type="submit" class="btn-primary px-12 rounded-xl" @click="startPayment()">Оплатить</button>
         </form>
@@ -33,7 +33,7 @@ import axios from 'axios';
         },
         methods : {
             async startPayment(){
-                if(Number(this.sum) > 0){
+                if(Number(this.sum) > 100){
                     if(this.sum > 9999){
                         this.sum = 9999;
                     }
@@ -44,6 +44,9 @@ import axios from 'axios';
                         if(info.status == 200){
                             window.open(info.data.link)
                         }
+                }
+                else{
+                    alert("Минимальная сумма оплата - 100 рублей")
                 }
                
                 
