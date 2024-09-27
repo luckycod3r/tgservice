@@ -20,7 +20,8 @@
               type="checkbox"
               :checked="isDark"
               @change="toggleTheme"
-              class="toggle theme-controller bg-base-content col-span-2 col-start-1 row-start-1"
+              class="toggle theme-switcher theme-controller bg-base-content col-span-2 col-start-1 row-start-1"
+              style="border: 2px solid rgba(0,0,0,0.5)"
             />
             <svg
               v-if="!isDark"
@@ -121,7 +122,7 @@ export default {
 
 <style lang="scss" scoped>
 .toggle{
-  border: 1px solid rgba(0,0,0,0.5);
+  border: 1px solid rgba(0,0,0,0.5) !important;
 }
 .header {
   width: 100%;

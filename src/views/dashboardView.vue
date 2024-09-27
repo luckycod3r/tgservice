@@ -58,7 +58,7 @@ export default {
         },
         async validateToken() {
             try {
-                const response = await axios.get('https://checker.tg-service.pro/api/me');
+                const response = await axios.get('https://tg-checker.com/api/me');
                 if (response.status != 200) {
                     this.$router.push('/login');
                 }
@@ -76,7 +76,7 @@ export default {
             }
         },
         async logout(){
-            await axios.post("https://checker.tg-service.pro/api/auth/jwt/logout");
+            await axios.post("https://tg-checker.com/api/auth/jwt/logout");
             this.$router.push('/')
             this.$store.state.meActive = false;
             setTimeout(() => {
@@ -93,7 +93,7 @@ export default {
             }
 
             try {
-                const response = await axios.post('https://checker.tg-service.pro/auth/reset-password', {
+                const response = await axios.post('https://tg-checker.com/auth/reset-password', {
                     token: token,
                     password: this.newPassword
                 });

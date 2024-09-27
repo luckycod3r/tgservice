@@ -28,6 +28,11 @@ const router = createRouter({
       component: () => import(/* webpackChunkName: "payment" */ '../views/checkerFinishView.vue')
     },
     {
+      path: '/policy',
+      name: 'Пользовательское соглашение',
+      component: () => import(/* webpackChunkName: "payment" */ '../views/policy.vue')
+    },
+    {
       path: '/dashboard',
       name: 'Личный аккаунт',
       meta : {
@@ -82,7 +87,7 @@ router.beforeEach(async (to, from, next) => {
     
     if(to.meta.guard && !store.state.meActive){
     
-      let user = await axios.get('https://checker.tg-service.pro/api/me')
+      let user = await axios.get('https://tg-checker.com/api/me')
       if(user.status == 200){
         if(user.data.email){
           store.state.meActive = true;

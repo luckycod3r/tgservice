@@ -15,6 +15,7 @@
                 </kbd>
             </label>
             <button type="submit" class="btn-primary px-12 rounded-xl">Зарегистрироваться</button>
+            <span class="text-sm">Нажимая "Зарегистрироваться" вы принимаете <a href="/policy">пользовательское соглашение</a></span>
         </form>
         <p>Уже зарегистрировались? Тогда пора <RouterLink class="login-link" to="/login">войти</RouterLink>!</p>
     </section>
@@ -47,7 +48,7 @@ export default {
         },
         async handleRegister() {
             try {
-                const response = await axios.post('https://checker.tg-service.pro/api/auth/register', this.formData, {
+                const response = await axios.post('https://tg-checker.com/api/auth/register', this.formData, {
                     headers: {
                         'Content-Type': 'application/json'
                     }
@@ -56,7 +57,7 @@ export default {
                     const params = new URLSearchParams();
                     params.append('username', this.formData.email);
                     params.append('password', this.formData.password);
-                    const response = await axios.post("https://checker.tg-service.pro/api/auth/jwt/login", params, {
+                    const response = await axios.post("https://tg-checker.com/api/auth/jwt/login", params, {
                         withCredentials : true,
                         headers: {
                             'Content-Type': 'application/x-www-form-urlencoded'
@@ -145,7 +146,10 @@ export default {
           background-color: #317aab;
         }
     }
-
+    a{
+        color: #419FD9;
+    }
+    
     .login-link{
         color: #419FD9;
 

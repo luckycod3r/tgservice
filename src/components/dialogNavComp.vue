@@ -79,6 +79,9 @@
 </script>
 
 <style lang="scss" scoped>
+.toggle{
+  border: 1px solid rgba(0,0,0,0.5) !important;
+}
     #dialog{
         width: 100%;
         height: 100dvh;

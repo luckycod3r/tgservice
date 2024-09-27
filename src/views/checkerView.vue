@@ -80,7 +80,7 @@ export default {
         };
     },
     async mounted(){
-        let tariffs = await axios.get("https://checker.tg-service.pro/api/tariffs");
+        let tariffs = await axios.get("https://tg-checker.com/api/tariffs");
         let content = tariffs.data;
         this.tariffs = content;
         this.btnText = `Начать проверку`
@@ -138,7 +138,7 @@ export default {
             if(this.$store.state.userData.balance < summ){
                 return alert("На вашем счёте недостаточно средств")
             }
-            let request =  await axios.post('https://checker.tg-service.pro/api/start_check',{
+            let request =  await axios.post('https://tg-checker.com/api/start_check',{
                 "define_gender" : this.parseGender,
                 "parse_bio" : this.parseBio,
                 "numbers" : this.phoneNumbers
@@ -147,7 +147,7 @@ export default {
             if(request.status == 200){
                 this.progress = 0;
                 this.btnText = "Идет проверка..."
-                let socket = new WebSocket("wss://checker.tg-service.pro/api/task_ws?task_id=" + task);
+                let socket = new WebSocket("wss://tg-checker.com/api/task_ws?task_id=" + task);
                 socket.onmessage = (ev)=>{
                     let json = JSON.parse(ev.data);
                     if(json.txt_file_id){

@@ -5,7 +5,7 @@ module.exports = defineConfig({
   devServer: {
     host: '0.0.0.0',  // Это позволяет серверу быть доступным снаружи локальной сети
     port: 3000,       // Убедись, что Vue Dev Server запущен на правильном порту
-    allowedHosts: ['checker.tg-service.pro'],  // Разрешаем нужные хосты
+    allowedHosts: ['tg-checker.com'],  // Разрешаем нужные хосты
     proxy: {
       '/api': {
         target: 'http://localhost:8011',  // Проксирование API запросов на бэкенд FastAPI

@@ -5,10 +5,19 @@
       <p>
         Чекер номеров. Проверяет, зарегистрированы ли в Telegram номера из вашей базы. Выдаёт всю информацию о зарегистрированных пользователях.
       </p>
-      <ol class="flex flex-col gap-6 custom-list">
+      <ol class="flex flex-col gap-2 custom-list">
         <li>Софт видит теневые ограничения Telegram и сам регулирует процесс чекинга.</li>
         <li>Результат можно сохранить в любом формате и с любым набором данных. Например, в Excel файле, где будет записан юзернейм, пол, номер телефона, время последнего онлайна, имя, фамилия и так далее.</li>
+        <li>Стоимость и условия использования: после начала проверки на вашем балансе временно блокируется сумма, равная стоимости успешной проверки + био (если включено) + определение гендера (если включено), умноженной на количество номеров. После проверки с баланса списывается итоговая сумма, но за те номера, которые не найдены, снимается только стоимость попытки проверки
+          <br><br>Цены:<br>
+Успешная проверка: {{tarrifs.success}}₽<br>
+Попытка проверки: {{tarrifs.trying}} ₽<br>
+Парсинг био: {{tarrifs.bio}}₽<br>
+Определение пола: {{tarrifs.gender}}₽<br>
+
+        </li>
       </ol>
+      
       <a href="/register" class="btn-primary mt-4 px-12 py-5 rounded-xl">Создать аккаунт</a>
     </div>
     <div class="illustration">
@@ -19,6 +28,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import { mapState } from 'vuex';
 
 export default {
@@ -30,6 +40,17 @@ export default {
     getIllustrationSrc() {
       return this.isDark ? require('@/assets/illustrations/about-dark.svg') : require('@/assets/illustrations/about.svg');
     }
+  },
+  data(){
+    return {
+      tarrifs: []
+    }
+  },
+  async mounted(){
+    
+    let tariffs = await axios.get("https://tg-checker.com/api/tariffs");
+    let content = tariffs.data;
+    this.tarrifs = content;
   }
 };
 </script>
