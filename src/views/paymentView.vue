@@ -33,7 +33,7 @@ import axios from 'axios';
         },
         methods : {
             async startPayment(){
-                if(Number(this.sum) > 100){
+                if(Number(this.sum) > 99){
                     if(this.sum > 9999){
                         this.sum = 9999;
                     }
@@ -46,7 +46,7 @@ import axios from 'axios';
                         }
                 }
                 else{
-                    alert("Минимальная сумма оплата - 100 рублей")
+                    alert("Минимальная сумма оплаты - 100 рублей")
                 }
                
                 
